@@ -141,7 +141,7 @@ figure_latin_font <- "Times New Roman" # English, Latin letters, and numbers
 
 Use SimSun for Chinese labels such as `南海诸岛`. Use Times New Roman for English labels, numeric legend ticks, and scale text such as `500 km` and `1,000 km`. Use explicit font runs where a label needs both families. If SimSun is missing on Windows, install or register it before rendering. Document any fallback on other platforms.
 
-Export vector figures with `grDevices::cairo_pdf()`. Inspect the font table with `pdffonts` and require embedded entries for the families used. Render the PDF with `pdftoppm` and check the printed characters and layout. Record the font families and export device in map metadata.
+Export vector PDF figures with `grDevices::cairo_pdf(fallback_resolution = 600)` or a higher fallback resolution. Inspect the font table with `pdffonts` and require embedded entries for the families used. Render the PDF with `pdftoppm` and check the printed characters and layout. Record the font families and export device in map metadata.
 
 ## North-arrow construction
 
@@ -268,16 +268,19 @@ Do not render a figure title, subtitle, caption, source note, or explanatory foo
 
 ## Reproducible outputs
 
-Write at least:
+Export each standalone map and each combined comparison in all three formats with matching basenames and physical dimensions. Include a combined comparison figure when multiple years or outcomes are shown.
 
-- individual PNG files at an effective resolution of at least 600 dpi at the intended manuscript size;
-- vector PDF counterparts;
-- a combined comparison figure when multiple years or outcomes are shown;
-- `map_code_coverage.csv` with source and mapped codes, match status, and reason;
-- `map_metadata.csv` with source URL, boundary version/date, source and target coordinate systems, conversion method/tolerance/iteration limit, projection parameters, main and inset scale-bar lengths/units/label positions/placement methods/padding, grid-north-arrow layer/style/label/position/size/padding, CJK font (`SimSun`), Latin font (`Times New Roman`), inset geographic filter, projected limits, geometry-to-frame padding, inset place label and scale placement, inset alignment rule, maritime-line source (`十段线` feature of the pinned `100000.json`), analytical-unit count, and displayed-polygon count.
+- PNG at an effective resolution of at least 600 dpi at the intended manuscript size.
+- Vector PDF with embedded fonts.
+- Vector SVG exported directly from the plot with `svglite::svglite()`. Keep geometry as vector elements and text as text. Open the SVG in a browser or vector editor with the specified fonts installed and check the Chinese glyphs, scale labels, legend and inset placement.
+
+Save the following audit files.
+
+- `map_code_coverage.csv` with source and mapped codes, match status, and reason.
+- `map_metadata.csv` with source URL, boundary version/date, source and target coordinate systems, conversion method/tolerance/iteration limit, projection parameters, main and inset scale-bar lengths/units/label positions/placement methods/padding, grid-north-arrow layer/style/label/position/size/padding, CJK font (`SimSun`), Latin font (`Times New Roman`), inset geographic filter, projected limits, geometry-to-frame padding, inset place label and scale placement, inset alignment rule, maritime-line source (`十段线` feature of the pinned `100000.json`), analytical-unit count, displayed-polygon count, and the export device for each format.
 
 Apply the 600 dpi minimum to rasterized content in every output format, including raster layers embedded in PDF or SVG. For a full-image raster at width `width_mm`, render at least `ceiling(width_mm * 600 / 25.4)` pixels across. Use `ragg::agg_png(res = 600)` or a higher resolution and verify the saved pixel dimensions and resolution tag. Preserve vector paths and text in vector exports and verify embedded raster resolution if present. Confirm legibility at the intended manuscript size and record the raster resolution in metadata.
 
 Check the PNG at the intended paper width. The reference checks use 85 mm and 120 mm for single maps and 180 mm for full-width maps, including comparisons. Measure final text size and inspect the legend, scale labels, inset place label, and fine administrative lines at that width. Revise the layout or font sizes if details are too small at final size.
 
-Run only saved scripts. Keep source boundaries and raw research data separate from intermediate joins and output figures. Visually inspect the final PNG or rendered PDF; numerical success alone cannot detect a covered Taiwan, clipped legend, distorted aspect ratio, missing glyphs, or misplaced inset.
+Run only saved scripts. Keep source boundaries and raw research data separate from intermediate joins and output figures. Visually inspect the PNG, rendered PDF, and SVG for covered geography, clipped legends, a distorted aspect ratio, missing glyphs, and misplaced insets.

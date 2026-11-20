@@ -19,8 +19,8 @@ The workflow reads user-supplied GeoJSON.CN 1.6.x files, converts GCJ-02 coordin
    Rscript scripts/check_map_dependencies.R
    ```
 
-   Stop if it reports a failure. It checks R, `jsonlite`, `ggplot2`, `ggspatial`, `sf`, `ragg`, Cairo PDF support, `pdffonts`, and `pdftoppm`.
-2. Read [`references/map-standard.md`](references/map-standard.md) before preparing boundary inputs, reconciling geographic codes, changing the projection, constructing the national outline, placing the South China Sea inset, or exporting Chinese-language PDF figures. That file is the single detailed source for boundary provenance, layout, and export checks.
+   Stop if it reports a failure. It checks R, `jsonlite`, `ggplot2`, `ggspatial`, `sf`, `ragg`, `svglite`, Cairo PDF support, `pdffonts`, and `pdftoppm`.
+2. Read [`references/map-standard.md`](references/map-standard.md) before preparing boundary inputs, reconciling geographic codes, changing the projection, constructing the national outline, placing the South China Sea inset, or exporting figures. That file is the single detailed source for boundary provenance, layout, and export checks.
 3. Source [`scripts/china_map_helpers.R`](scripts/china_map_helpers.R) from the project-local plotting script. It provides GeoJSON parsing, GCJ-02→WGS-84 conversion, Albers projection, border and coastline styling, inset geometry and layout, and the legend divider.
 
 Keep complete data preparation and plotting in a saved project-local `.R` script, then run it with `Rscript`. Do not rely on undocumented interactive state.
@@ -35,7 +35,7 @@ Keep complete data preparation and plotting in a saved project-local `.R` script
 6. Preserve raw GCJ-02 longitude and latitude fields, convert every boundary vertex to WGS-84 before projection or spatial operations, and verify the forward round-trip residual.
 7. Use the Albers projection, national outer outline, polygon-ring grouping, South China Sea inset, grid-north arrow, scale bar, figure-language convention, and PDF font checks specified in `references/map-standard.md`. Clip the inset at the Tropic of Cancer and align the top frame edge with the highest projected vertex. Pad the left, right, and bottom edges equally. Draw the maritime paths within the existing main-map frame. Use a bordered header the width of the inset with the inset's top frame edge as the shared divider. Place the 500 km scale bar to the right of the inset place label, with its label close above the bar. Inspect the borders on the exported map. Use SimSun (宋体) for Chinese text and Times New Roman for English, Latin, and numeric segments.
 8. Draw shared provincial borders as solid white lines with a dark vector shadow clipped to land, regardless of the adjacent fill colors. Draw each shared city or county edge once, as a thin unshadowed black or white line chosen from the adjacent fill colors. Use a framed right-side legend with a title divider and follow the alignment and spacing rules in `references/map-standard.md`. Hold scales, labels, and layout fixed across comparable maps. Use a diverging palette centered at zero for changes.
-9. Save PNG at an effective resolution of at least 600 dpi at the intended manuscript size, vector PDF, `map_code_coverage.csv`, and `map_metadata.csv`. Apply the 600 dpi minimum to rasterized content in every output format. Export each figure and comparison panel without a figure title, subtitle, or caption. Inspect every figure at its final manuscript size.
+9. Export every standalone map and assembled comparison figure as PNG, vector PDF, and vector SVG. Use matching basenames and physical dimensions. Require at least 600 effective dpi at the intended manuscript size for the PNG and any raster layers within PDF or SVG. Save `map_code_coverage.csv` and `map_metadata.csv`. Keep figure titles, subtitles, and captions out of all exports. Inspect all three formats at their final manuscript size.
 
 ## City-level boundary input
 

@@ -27,7 +27,7 @@ add_check(
   paste(R.version$major, R.version$minor, sep = ".")
 )
 
-required_packages <- c("jsonlite", "ggplot2", "ggspatial", "sf", "ragg")
+required_packages <- c("jsonlite", "ggplot2", "ggspatial", "sf", "ragg", "svglite")
 for (package_name in required_packages) {
   installed <- requireNamespace(package_name, quietly = TRUE)
   detail <- if (installed) {
