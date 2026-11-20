@@ -1,0 +1,4 @@
+interface:
+  display_name: "China Research Maps"
+  short_description: "Reproducible China choropleths with audited geography"
+  default_prompt: "Use $draw-china-research-maps to create a reproducible China regional thematic map from my research data."
