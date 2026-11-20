@@ -46,18 +46,23 @@
 
 ## 快速开始
 
-1. 将 skill 目录放在研究项目中，并在项目根目录保存 R 绘图脚本。
-2. 在 skill 目录内运行依赖检查。
+1. Codex 用户从研究项目根目录运行以下命令，将公开版 skill 安装到项目内的 `.agents/skills/draw-china-research-maps`。
 
    ```powershell
-   Rscript scripts/check_map_dependencies.R
+   git clone https://github.com/Pengtao-Lee/draw-china-research-maps-public.git .agents/skills/draw-china-research-maps
+   ```
+
+2. 在研究项目根目录运行依赖检查。
+
+   ```powershell
+   Rscript .agents/skills/draw-china-research-maps/scripts/check_map_dependencies.R
    ```
 
 3. 在研究项目的 `map_raw/geojson_cn_v1.6.3/` 中放入有权使用的原始 `100000.json`。该文件应包含名为「十段线」的 `MultiLineString` 要素。
-4. 在绘图脚本中引用辅助函数并读取本地数据。下面的路径以研究项目根目录为基准。
+4. 将 R 绘图脚本保存在研究项目根目录，并从该目录运行。下面的路径以研究项目根目录为基准。
 
    ```r
-   source(file.path("draw-china-research-maps", "scripts", "china_map_helpers.R"))
+   source(file.path(".agents", "skills", "draw-china-research-maps", "scripts", "china_map_helpers.R"))
    national_path <- file.path("map_raw", "geojson_cn_v1.6.3", "100000.json")
    maritime <- ten_segment_line(national_path)
    ```
